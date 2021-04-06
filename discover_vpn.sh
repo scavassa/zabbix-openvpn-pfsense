@@ -1,13 +1,9 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 
-path=/etc/openvpn/ccd # path to certificate directory
-
-users=`ls -F $path | sed 's/\///g'` # array of certificate name
-
+users=`grep authenticated /var/log/openvpn.log | awk '{print $7}' | sed "s/'//g" | sort -u`
 echo "{"
 echo "\"data\":["
 
-comma=""
 for user in $users
 do
     echo "    $comma{\"{#VPNUSER}\":\"$user\"}"
